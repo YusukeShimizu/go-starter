@@ -22,9 +22,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
         # golang-ci
-      - name: install lint
-        run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.18.0
-      - name: lint
-        run: golangci-lint run
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
+          version: v1.26
       - name: test
         run: go test ./... -v
